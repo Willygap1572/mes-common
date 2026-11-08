@@ -9,7 +9,8 @@ Forma parte de un sistema **MES open source** modular para gestionar la producci
 - Tipos de referencia: `PlantNodeRef`, `CatalogRef`, `MaterialRef`, `PartRef`, `ModuleInfo`.
 - Niveles de la jerarquía ISA-95 (`PLANT_LEVELS`).
 - Formato de error común `ProblemDetails` (RFC 9457, `application/problem+json`).
-- Contrato de plugins: `TelegramPlugin`, `TelegramAction`, `ActionContext` y helpers.
+- Contrato de plugins: `TelegramPlugin`, `TelegramAction`, `ActionStep`, `ActionContext` y helpers.
+- Codificador binario de telegramas: `decodeTelegram`, `encodeTelegram`, `validateLayout`, `readTypeId`, `toHex` / `fromHex`.
 
 ## Fuera de alcance
 

@@ -8,7 +8,8 @@ Responsabilidades:
 - Tipos de referencia: `PlantNodeRef`, `CatalogRef`, `MaterialRef`, `PartRef`, `ModuleInfo`.
 - Niveles de la jerarquía ISA-95 (`PLANT_LEVELS`).
 - Formato de error común `ProblemDetails` (RFC 9457, `application/problem+json`).
-- Contrato de plugins: `TelegramPlugin`, `TelegramAction`, `ActionContext` y helpers.
+- Contrato de plugins: `TelegramPlugin`, `TelegramAction`, `ActionStep`, `ActionContext` y helpers.
+- Codificador binario de telegramas: `decodeTelegram`, `encodeTelegram`, `validateLayout`, `readTypeId`, `toHex` / `fromHex`.
 
 Fuera de alcance (no implementar aquí):
 - Lógica de negocio: solo contratos y utilidades puras, sin dependencias de NestJS.
