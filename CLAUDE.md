@@ -47,6 +47,10 @@ Puertos locales: hub 4200; factorystructure 3101, materialcontrol 3102, bom 3103
 ## Decisiones de arquitectura
 
 - **Comunicación:** REST por defecto (`/api/v1/...`, OpenAPI en `/api/docs`). Cuando se necesite: SSE o WebSockets para tiempo real hacia el hub, webhooks para notificar cambios a otros módulos o sistemas externos, GraphQL para consultas agregadas (hub, reporting).
-- **Base de datos:** PostgreSQL, un esquema por módulo (nombre = id del módulo). Ningún módulo lee la BD de otro: solo vía API. Propuesta para `parthistory`: PostgreSQL + TimescaleDB.
+- **Base de datos:** PostgreSQL 17 (imagen con TimescaleDB), un esquema por módulo (nombre = id del módulo). Ningún módulo lee la BD de otro: solo vía API. `parthistory` usará TimescaleDB.
+- **ORM:** Drizzle (`@nestjs/drizzle`). Tablas en `src/database/schema.ts` con `dbSchema.table(...)`; migraciones con `npm run db:generate`, que se aplican solas al arrancar. Sin `DATABASE_URL` se usa PGlite en memoria (desarrollo y tests).
+- **Errores:** RFC 9457 `application/problem+json`, `type` = `urn:mes:<módulo>:<código>` (filtro global en `src/common/`).
+- **Contratos compartidos:** `@mes/common` (repo `mes-common`), fijado a un commit concreto en `package.json`. Para actualizarlo: `npm install github:Willygap1572/mes-common#<sha>`.
+- **Entorno completo:** `mes-hub-module/deploy/docker-compose.yml`.
 - **Autenticación:** pendiente (Azure Entra ID o sistema propio). Diseñar para OIDC/JWT; no implementar auth propia por módulo.
 - **Licencia:** EUPL-1.2. Todo el código nuevo debe ser compatible.
