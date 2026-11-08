@@ -191,7 +191,8 @@ export function decodeTelegram(
         out[f.name] = view.getInt32(o, le);
         break;
       case 'float32':
-        out[f.name] = Math.fround(view.getFloat32(o, le));
+        // float32 has ~7 significant digits: 2.4 instead of 2.4000000953674316
+        out[f.name] = Number(view.getFloat32(o, le).toPrecision(7));
         break;
       case 'float64':
         out[f.name] = view.getFloat64(o, le);

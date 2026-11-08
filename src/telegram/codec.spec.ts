@@ -66,6 +66,20 @@ describe('telegram codec', () => {
     ).toBe('00000001');
   });
 
+  it('shows float32 values with their real precision', () => {
+    const f: TelegramLayout = {
+      byteOrder: 'big',
+      size: 4,
+      fields: [{ name: 'x', type: 'float32', offset: 0 }],
+    };
+    expect(decodeTelegram(encodeTelegram({ x: 2.4 }, f), f)).toEqual({
+      x: 2.4,
+    });
+    expect(decodeTelegram(encodeTelegram({ x: 1234.567 }, f), f)).toEqual({
+      x: 1234.567,
+    });
+  });
+
   it('constant values win over the given ones', () => {
     const bytes = encodeTelegram({ typeId: 999 }, layout);
     expect(readTypeId(bytes)).toBe(100);
