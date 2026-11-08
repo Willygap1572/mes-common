@@ -1,0 +1,52 @@
+# CLAUDE.md: mes-common
+
+## Este módulo
+
+**Common** (id `common`): Contratos compartidos del MES: referencias entre módulos, formato de error (RFC 9457) y SDK de plugins del `telegramprocessor`.
+
+Responsabilidades:
+- Tipos de referencia: `PlantNodeRef`, `CatalogRef`, `MaterialRef`, `PartRef`, `ModuleInfo`.
+- Niveles de la jerarquía ISA-95 (`PLANT_LEVELS`).
+- Formato de error común `ProblemDetails` (RFC 9457, `application/problem+json`).
+- Contrato de plugins: `TelegramPlugin`, `TelegramAction`, `ActionContext` y helpers.
+
+Fuera de alcance (no implementar aquí):
+- Lógica de negocio: solo contratos y utilidades puras, sin dependencias de NestJS.
+
+Dependencias: ninguna.
+
+## Stack y comandos
+
+TypeScript 6 (ESM), Vitest, oxlint, Prettier. Node ≥ 22, npm ≥ 11.
+
+```bash
+npm install
+npm run lint && npm run build && npm test
+npm run format
+```
+
+## Convenciones
+
+- Solo tipos y funciones puras. Sin dependencias de runtime (ni NestJS ni Angular), para que la usen backend y hub.
+- Todo lo público se exporta desde `src/index.ts`.
+- Un cambio incompatible en un contrato obliga a subir versión mayor y a actualizar los módulos que lo usan.
+- Imports relativos terminados en `.js`.
+
+## Sistema MES: contexto común
+
+Sistema MES open source y modular. Cada módulo es un repositorio independiente (`Willygap1572/mes-*-module`) con su API y su base de datos. El `hub` es el único frontend. Objetivo: llevar la producción de una fábrica según normas europeas (ISA-95 / IEC 62264, ISO 22400, IEC 62443, RGPD, NIS2, Pasaporte Digital de Producto).
+
+Conceptos transversales:
+- **Catálogo**: producto/variante que se fabrica, con identificador y versión (p. ej. batería de 32, 42 o 46 celdas). Une `bom`, `machineconfigurator`, `linecontrol` y `toolcontrol`.
+- **Jerarquía de planta**: solo `factorystructure` la define; los demás guardan el id del nodo, nunca copian la estructura.
+- **Pieza**: metadatos + resultados + materiales + *bloque de datos adicional* (datos de producción, solo mientras está en línea).
+- **Telegrama**: mensaje PLC ↔ MES. `communicationadapter` → `telegramprocessor` (plugins) → módulos.
+
+Puertos locales: hub 4200; factorystructure 3101, materialcontrol 3102, bom 3103, machineconfigurator 3104, toolcontrol 3105, linecontrol 3106, telegramprocessor 3107, telegramconfigurator 3108, communicationadapter 3109, reporting 3110, catalog 3111, productionorder 3112, parttracking 3113, parthistory 3114, machinestate 3115, shiftcalendar 3116, quality 3117, labeling 3118.
+
+## Decisiones de arquitectura
+
+- **Comunicación:** REST por defecto (`/api/v1/...`, OpenAPI en `/api/docs`). Cuando se necesite: SSE o WebSockets para tiempo real hacia el hub, webhooks para notificar cambios a otros módulos o sistemas externos, GraphQL para consultas agregadas (hub, reporting).
+- **Base de datos:** PostgreSQL, un esquema por módulo (nombre = id del módulo). Ningún módulo lee la BD de otro: solo vía API. Propuesta para `parthistory`: PostgreSQL + TimescaleDB.
+- **Autenticación:** pendiente (Azure Entra ID o sistema propio). Diseñar para OIDC/JWT; no implementar auth propia por módulo.
+- **Licencia:** EUPL-1.2. Todo el código nuevo debe ser compatible.
