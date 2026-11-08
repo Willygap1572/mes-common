@@ -20,7 +20,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "prepare": "npm run build",
-    "lint": "oxlint --type-aware src/",
+    "lint": "oxlint --type-aware --deny-warnings src/",
     "test": "vitest run",
     "format": "prettier --write \"src/**/*.ts\"",
     "format:check": "prettier --check \"src/**/*.ts\""
