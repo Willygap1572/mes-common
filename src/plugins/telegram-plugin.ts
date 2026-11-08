@@ -25,6 +25,8 @@ export interface ActionContext {
 export interface TelegramAction {
   /** Unique within the plugin, e.g. `add`. Referenced as `maths.add`. */
   readonly name: string;
+  /** Short help shown in the hub, e.g. `target = a + b`. */
+  readonly description?: string;
   execute(
     ctx: ActionContext,
     params: Readonly<Record<string, unknown>>,
@@ -35,6 +37,12 @@ export interface TelegramPlugin {
   /** Plugin identifier, e.g. `core`, `maths`, `machineconfigurator`. */
   readonly name: string;
   readonly actions: readonly TelegramAction[];
+}
+
+/** One step of a telegram definition: `plugin.action` plus its parameters. */
+export interface ActionStep {
+  action: string;
+  params?: Record<string, unknown>;
 }
 
 /** Resolves a value reference: `request.x`, `variables.y`, `response.z` or a literal. */
