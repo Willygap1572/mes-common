@@ -20,6 +20,15 @@ export interface ActionContext {
   readonly response: FieldValues;
   /** Intermediate values shared between the actions of one telegram. */
   readonly variables: FieldValues;
+  /** Where the telegram comes from; absent when testing from the hub. */
+  readonly meta?: TelegramMeta;
+}
+
+export interface TelegramMeta {
+  /** Machine (factorystructure node) that sent the telegram. */
+  nodeId?: string;
+  /** communicationadapter connection. */
+  connectionId?: string;
 }
 
 export interface TelegramAction {
