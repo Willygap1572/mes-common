@@ -50,7 +50,7 @@ Puertos locales: hub 4200; factorystructure 3101, materialcontrol 3102, bom 3103
 - **Base de datos:** PostgreSQL 17 (imagen con TimescaleDB), un esquema por módulo (nombre = id del módulo). Ningún módulo lee la BD de otro: solo vía API. `parthistory` usará TimescaleDB.
 - **ORM:** Drizzle (`@nestjs/drizzle`). Tablas en `src/database/schema.ts` con `dbSchema.table(...)`; migraciones con `npm run db:generate`, que se aplican solas al arrancar. Sin `DATABASE_URL` se usa PGlite en memoria (desarrollo y tests).
 - **Errores:** RFC 9457 `application/problem+json`, `type` = `urn:mes:<módulo>:<código>` (filtro global en `src/common/`).
-- **Contratos compartidos:** `@mes/common` (repo `mes-common`), fijado a un commit concreto en `package.json`. Para actualizarlo: `npm install github:Willygap1572/mes-common#<sha>`.
+- **Contratos compartidos:** `@mes/common` (repo `mes-common`), fijado a un commit concreto en `package.json`. Para actualizarlo: `npm install git+https://github.com/Willygap1572/mes-common.git#<sha>` (siempre con `git+https`: la forma corta `github:` deja una URL SSH en el lock y el CI no puede descargarla).
 - **Entorno completo:** `mes-hub-module/deploy/docker-compose.yml`.
 - **Autenticación:** pendiente (Azure Entra ID o sistema propio). Diseñar para OIDC/JWT; no implementar auth propia por módulo.
 - **Licencia:** EUPL-1.2. Todo el código nuevo debe ser compatible.

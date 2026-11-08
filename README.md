@@ -29,7 +29,7 @@ Forma parte de un sistema **MES open source** modular para gestionar la producci
 Librería TypeScript (ESM). Mientras no se publique en un registro npm, se instala desde GitHub:
 
 ```bash
-npm install github:Willygap1572/mes-common
+npm install git+https://github.com/Willygap1572/mes-common.git
 ```
 
 ```ts
