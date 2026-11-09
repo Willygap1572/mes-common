@@ -11,6 +11,7 @@ Forma parte de un sistema **MES open source** modular para gestionar la producci
 - Formato de error común `ProblemDetails` (RFC 9457, `application/problem+json`).
 - Contrato de plugins: `TelegramPlugin`, `TelegramAction`, `ActionStep`, `ActionContext` y helpers.
 - Codificador binario de telegramas: `decodeTelegram`, `encodeTelegram`, `validateLayout`, `readTypeId`, `toHex` / `fromHex`.
+- `PartRecord`: la pieza terminada que `parttracking` entrega a `parthistory`.
 
 ## Fuera de alcance
 

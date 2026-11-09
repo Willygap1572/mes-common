@@ -10,6 +10,7 @@ Responsabilidades:
 - Formato de error común `ProblemDetails` (RFC 9457, `application/problem+json`).
 - Contrato de plugins: `TelegramPlugin`, `TelegramAction`, `ActionStep`, `ActionContext` y helpers.
 - Codificador binario de telegramas: `decodeTelegram`, `encodeTelegram`, `validateLayout`, `readTypeId`, `toHex` / `fromHex`.
+- `PartRecord`: la pieza terminada que `parttracking` entrega a `parthistory`.
 
 Fuera de alcance (no implementar aquí):
 - Lógica de negocio: solo contratos y utilidades puras, sin dependencias de NestJS.
