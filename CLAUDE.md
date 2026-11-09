@@ -54,5 +54,5 @@ Puertos locales: hub 4200; factorystructure 3101, materialcontrol 3102, bom 3103
 - **Errores:** RFC 9457 `application/problem+json`, `type` = `urn:mes:<módulo>:<código>` (filtro global en `src/common/`).
 - **Contratos compartidos:** `@mes/common` (repo `mes-common`), fijado a un commit concreto en `package.json`. Para actualizarlo: `npm install git+https://github.com/Willygap1572/mes-common.git#<sha>` (siempre con `git+https`: la forma corta `github:` deja una URL SSH en el lock y el CI no puede descargarla).
 - **Entorno completo:** `mes-hub-module/deploy/docker-compose.yml`.
-- **Autenticación:** pendiente (Azure Entra ID o sistema propio). Diseñar para OIDC/JWT; no implementar auth propia por módulo.
+- **Autenticación:** OIDC/JWT con Keycloak autoalojado (realm `mes` en `mes-hub-module/deploy/keycloak/`). Roles `operator`, `engineer`, `admin` y `service` (módulo a módulo, *client credentials*). Cada módulo valida los tokens con `src/auth/` y registra quién cambió qué en `src/audit/`; no hay usuarios ni contraseñas en los módulos. Pasar a Microsoft Entra ID es configuración (`OIDC_ISSUER`, cliente del hub).
 - **Licencia:** EUPL-1.2. Todo el código nuevo debe ser compatible.
